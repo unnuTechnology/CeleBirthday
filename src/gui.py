@@ -1,3 +1,8 @@
+from tkinter import *
+from tkinter.ttk import *
+from tkinter.messagebox import *
+
+
 def control_panel(_1, _2):
     panel = Tk()
     panel.title('CeleBirthday 控制面板')
