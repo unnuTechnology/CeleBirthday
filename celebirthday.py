@@ -15,10 +15,14 @@ tray_icon = pystray.Icon(
     'test name',
     icon=Image.open('./resources/cake_logo.ico'),
     menu=pystray.Menu(
-        pystray.MenuItem('控制面板', gui.control_panel),
+        pystray.MenuItem('关于 CeleBirthday', gui.about_app),
+        pystray.Menu.SEPARATOR,
+        pystray.MenuItem('CeleBirthday 仪表盘', gui.dashboard),
+        pystray.MenuItem('CeleBirthday 控制面板', gui.control_panel),
+        pystray.Menu.SEPARATOR,
         pystray.MenuItem('退出', exit_by_tray_icon),
     )
 )
 
 log.warning(f'CeleBirthday 成功启动')
-tray_icon.run_detached()
+tray_icon.run()
