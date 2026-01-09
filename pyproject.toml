@@ -19,6 +19,9 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3.13",
 ]
+dependencies = [
+    "pystray>=0.19.5",
+]
 
 [project.urls]
 Homepage = "https://github.com/unnuTechnology/CeleBirthday"
