@@ -17,10 +17,10 @@ tray_icon = pystray.Icon(
     menu=pystray.Menu(
         pystray.MenuItem('关于 CeleBirthday', gui.about_app),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem('CeleBirthday 仪表盘', gui.dashboard),
-        pystray.MenuItem('CeleBirthday 控制面板', gui.control_panel),
+        pystray.MenuItem('仪表盘', gui.dashboard),
+        pystray.MenuItem('控制面板', gui.control_panel),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem('退出', exit_by_tray_icon),
+        pystray.MenuItem('退出程序', exit_by_tray_icon),
     )
 )
 

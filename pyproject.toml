@@ -37,3 +37,6 @@ include = ["celebirthday*"]
 
 [tool.setuptools.package-data]
 celebirthday = ["resources/*"]
+
+[other]
+version_full = "v0.1.0 Snapshot 26Q101"

@@ -1,10 +1,11 @@
 import functools
 import threading
+import webbrowser
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.messagebox import *
 
-from src.utils import log
+from src.utils import *
 
 
 def _run_on_new_thread(func):
@@ -35,9 +36,33 @@ def control_panel():
 @_run_on_new_thread
 def about_app():
     """显示 CeleBirthday 应用程序信息"""
-    #TODO: replace with a more detailed window with buttons
+    about = Tk()
+    about.title('关于 CeleBirthday')
+    about.geometry('800x600')
+    about.resizable(False, False)
+    about.iconbitmap('./resources/cake_logo.ico')
+
+    logo = PhotoImage(file='./resources/cake_logo.png')
+    logo_label = Label(about, image=logo)
+    logo_label.pack(pady=5)
+
+    Label(about, text='CeleBirthday', font=('Bahnschrift', 32, 'bold')).pack(pady=5)
+    Label(about, text=VERSION_FULL, font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
+    Label(about, text='©2026 unnuTechnology | MIT License', font=('Bahnschrift Light', 12, 'normal')).pack(pady=2)
+    Label(about, text='在班级大屏上庆祝你同学们（当然还有你自己）的生日！', font=('Bahnschrift Light', 12, 'normal')).pack(pady=2)
+    Button(about, text='项目仓库主页', command=lambda: webbrowser.open(WEBSITE)).pack(
+        padx=(20, 5), pady=(200, 20), expand=True, anchor=S, fill=BOTH, side=LEFT)
+    Button(about, text='报告问题', command=lambda: webbrowser.open(WEBSITE+'/issues')).pack(
+        padx=(5, 20), pady=(200, 20), expand=True, anchor=S, fill=BOTH,side=RIGHT)
+
+    def on_closing():
+        log.info(f'关闭了 CeleBirthday 关于应用程序窗口')
+        about.destroy()
+
+    about.protocol('WM_DELETE_WINDOW', on_closing)
+
     log.info(f'打开了 CeleBirthday 关于应用程序窗口')
-    showinfo('关于 CeleBirthday', '在班级大屏上庆祝你同学们（当然还有你自己）的生日！')
+    about.mainloop()
 
 
 @_run_on_new_thread
