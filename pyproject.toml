@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CeleBirthday"
+version = "0.1.0"
+description = "庆祝你同学们（当然还有你自己）的生日"
+readme = "README.md"
+requires-python = ">=3.13"
+license = {file = "LICENSE.txt"}
+authors = [
+    {name = "MacrosMeng", email = "meng-yc@outlook.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/unnuTechnology/CeleBirthday"
+Repository = "https://github.com/unnuTechnology/CeleBirthday.git"
+"Bug Tracker" = "https://github.com/unnuTechnology/CeleBirthday/issues"
+
+[project.scripts]
+celebirthday = "celebirthday:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["celebirthday*"]
+
+[tool.setuptools.package-data]
+celebirthday = ["resources/*"]
