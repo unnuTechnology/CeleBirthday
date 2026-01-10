@@ -99,8 +99,67 @@ def has_birthday_today(birthdays: dict[str, datetime.date | None]) -> str:
     """
     today = datetime.date.today()
     log.debug(f'从 {reprlib.repr(birthdays)} 检查是否有生日在今天 ({today!r})')
+
     for name, birthday in birthdays.items():
-        if (today.month, today.day) == (birthday.month, birthday.day):
-            log.debug(f'检测到 {name!r} 在今天（{today!r}）过生日')
-            return name
+        try:
+            if (today.month, today.day) == (birthday.month, birthday.day):
+                log.debug(f'检测到 {name!r} 在今天（{today!r}）过生日')
+                return name
+        except AttributeError:
+            log.warning(f'{name!r} 的生日日期为None，跳过')
+            continue
     return ''
+
+
+def next_birthday(birthdays: dict[str, datetime.date | None]) -> tuple[str, datetime.date | None]:
+    """
+    检查下一个过生日的人。
+
+    Args:
+        birthdays (dict[str, datetime.date | None]): 键为姓名，值为生日日期的生日列表字典。
+
+    Returns:
+        tuple[str, datetime.date | None]: 下一个过生日的人的姓名和生日日期；如果生日列表没有有效的记录，则返回空字符串和None。
+    """
+    today = datetime.date.today()
+    log.debug(f'从 {reprlib.repr(birthdays)} 检查下一个生日 (今日为 {today!r})')
+
+    next_birthdays = {}  # 所有人下一个过生日的日子（只会晚于今天）
+    for name, birthday in birthdays.items():
+        try:
+            if (today.month, today.day) < (birthday.month, birthday.day):
+                # 今年还没有过生日
+                next_birthdays[name] = birthday
+            else:
+                # 今年已经过了生日，下一个生日是明年的
+                next_birthdays[name] = birthday.replace(year=today.year+1)
+        except AttributeError:
+            log.warning(f'{name!r} 的生日日期为None，跳过')
+            continue
+
+    next_birthdays = tuple(next_birthdays.items())
+    next_birthdays = sorted(next_birthdays, key=lambda x: (x[1].month, x[1].day))
+
+    try:
+        return next_birthdays[0]
+    except IndexError:
+        log.warning(f'从 {reprlib.repr(birthdays)} 检查下一个生日时不能从 {next_birthdays=!r} 获取有效记录')
+        return '', None
+
+
+def is_valid_birthday(birthdays: dict[str, datetime.date | None]) -> bool:
+    """
+    检查生日列表是否有效。
+
+    Args:
+        birthdays (dict[str, datetime.date | None]): 键为姓名，值为生日日期的生日列表字典。
+
+    Returns:
+        bool: 如果生日列表中至少有一个有效日期，则返回True；否则返回False。
+    """
+    if not birthdays:
+        return False
+    else:
+        return any(
+            birthday is not None for birthday in birthdays.values()
+        )

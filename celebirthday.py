@@ -27,11 +27,11 @@ tray_icon = pystray.Icon(
 )
 config = utils.read_config()
 birthdays = utils.read_birthdays(config)
-if not birthdays:
+if utils.is_valid_birthday(birthdays):
     utils.log.warning(f'从配置 {reprlib.repr(config)} 读取到的生日列表 {reprlib.repr(birthdays)} 为空')
     utils.notify(
         title='CeleBirthday 警告 - 配置文件',
-        message='从生日列表文件读取到的生日列表为空。请前往控制面板设置一个有效的生日列表文件。',
+        message='从生日列表文件读取到的生日列表为空或是无效记录。请前往控制面板设置一个有效的生日列表文件。',
         app_name='CeleBirthday',
         app_icon='./resources/cake_logo.ico',
     )
