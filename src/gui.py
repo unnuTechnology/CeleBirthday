@@ -7,7 +7,7 @@ from tkinter.ttk import *
 import sv_ttk
 import darkdetect as dd
 
-from src.utils import *
+from src import utils
 
 
 def _run_on_new_thread(func):
@@ -26,12 +26,12 @@ def control_panel():
     panel.iconbitmap('./resources/cake_logo.ico')
 
     def on_closing():
-        log.info(f'关闭了 CeleBirthday 控制面板')
+        utils.log.info(f'关闭了 CeleBirthday 控制面板')
         panel.destroy()
 
     panel.protocol('WM_DELETE_WINDOW', on_closing)
 
-    log.info(f'打开了 CeleBirthday 控制面板')
+    utils.log.info(f'打开了 CeleBirthday 控制面板')
     sv_ttk.set_theme(dd.theme())
     panel.mainloop()
 
@@ -50,22 +50,22 @@ def about_app():
     logo_label.pack(padx=(0, 10), side=LEFT, anchor=W)
 
     Label(about, text='CeleBirthday', font=('Bahnschrift', 48, 'bold')).pack(pady=10)
-    Label(about, text=VERSION_FULL, font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
+    Label(about, text=utils.VERSION_FULL, font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
     Separator(about, orient='horizontal').pack(fill=X, padx=20, pady=5)
     Label(about, text='©2026 unnuTechnology | MIT License', font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
     Label(about, text='在班级大屏上庆祝你同学们（当然还有你自己）的生日！', font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
-    Button(about, text='项目仓库主页', command=lambda: webbrowser.open(WEBSITE)).pack(
+    Button(about, text='项目仓库主页', command=lambda: webbrowser.open(utils.WEBSITE)).pack(
         padx=(20, 10), pady=(300, 20), expand=True, anchor=S, fill=BOTH, side=LEFT)
-    Button(about, text='报告问题', command=lambda: webbrowser.open(WEBSITE+'/issues')).pack(
+    Button(about, text='报告问题', command=lambda: webbrowser.open(utils.WEBSITE+'/issues')).pack(
         padx=(10, 20), pady=(300, 20), expand=True, anchor=S, fill=BOTH, side=RIGHT)
 
     def on_closing():
-        log.info(f'关闭了 CeleBirthday 关于应用程序窗口')
+        utils.log.info(f'关闭了 CeleBirthday 关于应用程序窗口')
         about.destroy()
 
     about.protocol('WM_DELETE_WINDOW', on_closing)
 
-    log.info(f'打开了 CeleBirthday 关于应用程序窗口')
+    utils.log.info(f'打开了 CeleBirthday 关于应用程序窗口')
     sv_ttk.set_theme(dd.theme())
     about.mainloop()
 
@@ -80,11 +80,11 @@ def dashboard():
     board.iconbitmap('./resources/cake_logo.ico')
 
     def on_closing():
-        log.info(f'关闭了 CeleBirthday 仪表盘')
+        utils.log.info(f'关闭了 CeleBirthday 仪表盘')
         board.destroy()
 
     board.protocol('WM_DELETE_WINDOW', on_closing)
 
-    log.info(f'打开了 CeleBirthday 仪表盘')
+    utils.log.info(f'打开了 CeleBirthday 仪表盘')
     sv_ttk.set_theme(dd.theme())
     board.mainloop()
