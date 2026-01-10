@@ -12,7 +12,7 @@ def exit_by_tray_icon(icon, _):
 
 
 tray_icon = pystray.Icon(
-    'test name',
+    'CeleBirthday',
     icon=Image.open('./resources/cake_logo.ico'),
     menu=pystray.Menu(
         pystray.MenuItem('关于 CeleBirthday', gui.about_app),
