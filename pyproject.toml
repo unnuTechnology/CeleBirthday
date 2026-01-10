@@ -21,6 +21,7 @@ classifiers = [
 ]
 dependencies = [
     "darkdetect>=0.8.0",
+    "dateparser>=1.2.2",
     "pip==25.3",
     "pystray>=0.19.5",
     "sv-ttk>=2.6.1",

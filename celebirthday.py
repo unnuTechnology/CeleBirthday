@@ -2,7 +2,7 @@ import pystray
 from PIL import Image
 
 from src import gui
-from src.utils import log
+from src.utils import *
 
 
 def exit_by_tray_icon(icon, _):
@@ -23,6 +23,12 @@ tray_icon = pystray.Icon(
         pystray.MenuItem('退出程序', exit_by_tray_icon),
     )
 )
+config = read_config()
+birthdays = read_birthdays(config)
+if not birthdays:
+    log.warning(f'从配置 {reprlib.repr(config)} 读取到的生日列表 {reprlib.repr(birthdays)} 为空')
+    #TODO: ⬇️does not run as intended
+    tray_icon.notify('从生日列表文件读取到的生日列表为空。请前往控制面板设置一个有效的生日列表文件。', 'CeleBirthday')
 
 log.warning(f'CeleBirthday 成功启动')
 tray_icon.run()
