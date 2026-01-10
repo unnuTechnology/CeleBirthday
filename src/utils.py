@@ -23,8 +23,8 @@ VERSION = proj_info['project']['version']
 VERSION_FULL = f"{proj_info['project']['name']} {proj_info['other']['version_full']}"
 WEBSITE = proj_info['project']['urls']['Homepage']
 
-DEFAULT_CONFIG_PATH = '/config/config.json'
-os.makedirs(os.path.dirname(DEFAULT_CONFIG_PATH), exist_ok=True)
+DEFAULT_CONFIG_PATH = './config/config.json'
+os.makedirs(os.path.abspath(os.path.dirname(DEFAULT_CONFIG_PATH)), exist_ok=True)
 
 
 def _get_date_from(date_str: str) -> datetime.date | None:

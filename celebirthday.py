@@ -19,7 +19,7 @@ tray_icon = pystray.Icon(
     menu=pystray.Menu(
         pystray.MenuItem('关于 CeleBirthday', gui.about_app),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem('仪表盘', gui.dashboard),
+        pystray.MenuItem('仪表盘', lambda: gui.dashboard(config, birthdays)),
         pystray.MenuItem('控制面板', gui.control_panel),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem('退出程序', exit_by_tray_icon),
@@ -42,7 +42,8 @@ if not utils.has_birthday_today(birthdays) and utils.is_valid_birthday(birthdays
     utils.log.info(f'在今天没有任何人过生日。')
     utils.notify(
         title='CeleBirthday 状态提示',
-        message='状态：在今天没有任何人过生日。',
+        message=f'状态：在今天没有任何人过生日。\n下一个生日是 '
+                f'{f"{nb[0]}: {nb[1].strftime('%Y-%m-%d')}" if (nb := utils.next_birthday(birthdays)) != ("", None) else "-"}。',
         app_name='CeleBirthday',
         app_icon='./resources/cake_logo.ico',
     )

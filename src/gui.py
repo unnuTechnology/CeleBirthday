@@ -1,8 +1,11 @@
+import datetime
 import functools
 import threading
+import traceback
 import webbrowser
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import messagebox
 
 import sv_ttk
 import darkdetect as dd
@@ -17,7 +20,25 @@ def _run_on_new_thread(func):
     return wrapper
 
 
+def _err_reported(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception as e:
+            utils.log.critical(f'发生不可恢复的异常：{e.__class__.__qualname__}: {e}')
+            utils.log.debug(traceback.format_exc())
+            messagebox.showerror('CeleBirthday 发生错误',
+                                 f'CeleBirthday 发生不可恢复的异常：{e.__class__.__qualname__}: {e}\n'
+                                 f'点击 OK 来结束程序。以下是栈错误信息。',
+                                 detail=traceback.format_exc(),
+                                 icon='error')
+            raise
+    return wrapper
+
+
 @_run_on_new_thread
+@_err_reported
 def control_panel():
     panel = Tk()
     panel.title('CeleBirthday 控制面板')
@@ -37,6 +58,7 @@ def control_panel():
 
 
 @_run_on_new_thread
+@_err_reported
 def about_app():
     """显示 CeleBirthday 应用程序信息"""
     about = Tk()
@@ -53,10 +75,11 @@ def about_app():
     Label(about, text=utils.VERSION_FULL, font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
     Separator(about, orient='horizontal').pack(fill=X, padx=20, pady=5)
     Label(about, text='©2026 unnuTechnology | MIT License', font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
-    Label(about, text='在班级大屏上庆祝你同学们（当然还有你自己）的生日！', font=('Bahnschrift Light', 16, 'normal')).pack(pady=2)
+    Label(about, text='在班级大屏上庆祝你同学们（当然还有你自己）的生日！', font=('Bahnschrift Light', 16, 'normal')).pack(
+        pady=2)
     Button(about, text='项目仓库主页', command=lambda: webbrowser.open(utils.WEBSITE)).pack(
         padx=(20, 10), pady=(300, 20), expand=True, anchor=S, fill=BOTH, side=LEFT)
-    Button(about, text='报告问题', command=lambda: webbrowser.open(utils.WEBSITE+'/issues')).pack(
+    Button(about, text='报告问题', command=lambda: webbrowser.open(utils.WEBSITE + '/issues')).pack(
         padx=(10, 20), pady=(300, 20), expand=True, anchor=S, fill=BOTH, side=RIGHT)
 
     def on_closing():
@@ -71,13 +94,27 @@ def about_app():
 
 
 @_run_on_new_thread
-def dashboard():
+@_err_reported
+def dashboard(config, birthdays):
     """显示 CeleBirthday 仪表盘"""
     board = Tk()
     board.title('CeleBirthday 仪表盘')
-    board.geometry('500x300')
+    board.geometry('700x500')
     board.resizable(False, False)
     board.iconbitmap('./resources/cake_logo.ico')
+
+    ok_img = PhotoImage(file='./resources/ok.png')
+    ok_label = Label(board, image=ok_img)
+    ok_label.pack(padx=20, side=LEFT, anchor=W)
+
+    Label(board, text='CeleBirthday 正在运行', font=('Bahnschrift', 28, 'bold')).pack(padx=10, pady=(20, 5))
+    Separator(board, orient='horizontal').pack(fill=X, padx=(0, 20), pady=5)
+    Label(board, text=f'今日过生日人：{utils.has_birthday_today(birthdays) if utils.has_birthday_today(birthdays) else "-"}',
+          font=('Bahnschrift', 12, 'normal')).pack(padx=20, pady=5)
+    Label(board, text=f'下一个生日：{f"{nb[0]}: {nb[1].strftime('%Y-%m-%d')}" if (nb := utils.next_birthday(birthdays)) != ("", None) else "-"}',
+          font=('Bahnschrift', 12, 'normal')).pack(padx=20, pady=5)
+    Label(board, text=f'系统时间：{datetime.date.today().strftime("%Y-%m-%d")}',
+          font=('Bahnschrift', 12, 'normal')).pack(padx=20, pady=(20, 5))
 
     def on_closing():
         utils.log.info(f'关闭了 CeleBirthday 仪表盘')
