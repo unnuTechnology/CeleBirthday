@@ -58,8 +58,8 @@ def read_config() -> dict:
     except FileNotFoundError:
         log.warning(f'未找到默认配置文件 {DEFAULT_CONFIG_PATH}，从模板创建新的配置文件。')
         with open(DEFAULT_CONFIG_PATH, 'w', encoding='utf8') as f:
-            json.dump({"birthday_file": ""}, f, indent=4)
-        res = {"birthday_file": ""}
+            json.dump({"birthday_file": "", "celebration_time": "00:00:00"}, f, indent=4)
+        res = {"birthday_file": "", "celebration_time": "00:00:00"}
 
     return res
 
@@ -127,7 +127,7 @@ def next_birthday(birthdays: dict[str, datetime.date | None]) -> tuple[str, date
     next_birthdays = {}  # 所有人下一个过生日的日子（只会晚于今天）
     for name, birthday in birthdays.items():
         try:
-            if (today.month, today.day) < (birthday.month, birthday.day):
+            if (today.month, today.day) <= (birthday.month, birthday.day):
                 # 今年还没有过生日
                 next_birthdays[name] = birthday.replace(year=today.year)
             else:

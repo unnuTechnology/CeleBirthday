@@ -1,4 +1,5 @@
 import reprlib
+import datetime
 
 import pystray
 from PIL import Image
@@ -47,6 +48,17 @@ if not utils.has_birthday_today(birthdays) and utils.is_valid_birthday(birthdays
         app_name='CeleBirthday',
         app_icon='./resources/cake_logo.ico',
     )
+else:
+    today_birthday = utils.next_birthday(birthdays)
+    utils.log.info(f'在今天 {today_birthday[0]} 过生日。')
+    utils.notify(
+        title='CeleBirthday 状态提示',
+        message=f'状态：在今天 {today_birthday[0]} 过生日。',
+        app_name='CeleBirthday',
+        app_icon='./resources/cake_logo.ico',
+    )
+    celebrate_time = datetime.time.fromisoformat(config['celebration_time'])
+    gui.celebrate_today(today_birthday[0], celebrate_time)
 
 utils.log.warning(f'CeleBirthday 成功启动')
 tray_icon.run()

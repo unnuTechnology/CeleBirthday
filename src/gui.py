@@ -125,3 +125,10 @@ def dashboard(config, birthdays):
     utils.log.info(f'打开了 CeleBirthday 仪表盘')
     sv_ttk.set_theme(dd.theme())
     board.mainloop()
+
+
+@_run_on_new_thread
+@_err_reported
+def celebrate_today(people: str, time: datetime.time):
+    """在指定时间庆祝今天过生日的人"""
+    raise NotImplementedError
