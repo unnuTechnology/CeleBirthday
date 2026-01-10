@@ -138,7 +138,7 @@ def next_birthday(birthdays: dict[str, datetime.date | None]) -> tuple[str, date
             continue
 
     next_birthdays = tuple(next_birthdays.items())
-    next_birthdays = sorted(next_birthdays, key=lambda x: (x[1].month, x[1].day))
+    next_birthdays = sorted(next_birthdays, key=lambda x: (x[1].year, x[1].month, x[1].day))
 
     try:
         return next_birthdays[0]
