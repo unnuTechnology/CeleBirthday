@@ -20,7 +20,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
+    "darkdetect>=0.8.0",
+    "pip==25.3",
     "pystray>=0.19.5",
+    "sv-ttk>=2.6.1",
 ]
 
 [project.urls]
