@@ -27,7 +27,7 @@ tray_icon = pystray.Icon(
 )
 config = utils.read_config()
 birthdays = utils.read_birthdays(config)
-if utils.is_valid_birthday(birthdays):
+if not utils.is_valid_birthday(birthdays):
     utils.log.warning(f'从配置 {reprlib.repr(config)} 读取到的生日列表 {reprlib.repr(birthdays)} 为空')
     utils.notify(
         title='CeleBirthday 警告 - 配置文件',
