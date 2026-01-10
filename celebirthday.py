@@ -38,7 +38,7 @@ if not utils.is_valid_birthday(birthdays):
 utils.log.debug(f'读取了配置 {reprlib.repr(config)}')
 utils.log.debug(f'读取了生日列表 {reprlib.repr(birthdays)}')
 
-if not utils.has_birthday_today(birthdays):
+if not utils.has_birthday_today(birthdays) and utils.is_valid_birthday(birthdays):
     utils.log.info(f'在今天没有任何人过生日。')
     utils.notify(
         title='CeleBirthday 状态提示',
