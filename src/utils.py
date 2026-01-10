@@ -129,7 +129,7 @@ def next_birthday(birthdays: dict[str, datetime.date | None]) -> tuple[str, date
         try:
             if (today.month, today.day) < (birthday.month, birthday.day):
                 # 今年还没有过生日
-                next_birthdays[name] = birthday
+                next_birthdays[name] = birthday.replace(year=today.year)
             else:
                 # 今年已经过了生日，下一个生日是明年的
                 next_birthdays[name] = birthday.replace(year=today.year+1)
