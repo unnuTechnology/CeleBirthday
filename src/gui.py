@@ -131,13 +131,13 @@ def dashboard(config, birthdays):
 @_err_reported
 def celebrate_today(people: str, celebrate_time: datetime.time):
     """在指定时间庆祝今天过生日的人"""
-    now = datetime.datetime.now().time()
+    now = datetime.datetime.now().time().replace(microsecond=0)
 
     if now >= celebrate_time:
-        utils.log.warning(f'当前时间 {now} 晚于指定时间 {celebrate_time}，无法庆祝 {people} 过生日。')
+        utils.log.warning(f'当前时间 {now} 晚于指定过生日时间 {celebrate_time}，无法庆祝 {people} 过生日。')
         utils.notify(
             title='CeleBirthday 警告',
-            message=f'当前时间 {now} 晚于指定时间 {celebrate_time}，无法庆祝 {people} 过生日。',
+            message=f'当前时间 {now} 晚于指定过生日时间 {celebrate_time}，无法庆祝 {people} 过生日。',
             app_name='CeleBirthday',
             app_icon='./resources/cake_logo.ico'
         )
@@ -168,5 +168,10 @@ def celebrate(people: str):
     cele.geometry('400x200')
     cele.resizable(False, False)
     cele.iconbitmap('./resources/cake_logo.ico')
+    cele.wm_attributes("-topmost", True)
 
+    Label(cele, text=f'恭喜 {people} 生日快乐！', font=('Bahnschrift', 28, 'bold')).pack(padx=20, pady=20)
+
+    utils.log.warning(f'开始庆祝 {people} 过生日')
+    sv_ttk.set_theme(dd.theme())
     cele.mainloop()
