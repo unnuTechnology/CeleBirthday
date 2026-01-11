@@ -143,27 +143,30 @@ def celebrate_today(people: str, celebrate_time: datetime.time):
         )
         return
     else:
-        utils.log.info(f'将在 {celebrate_time} 庆祝 {people} 过生日')
+        now = datetime.datetime.now().time()
+        rest_time = (utils.total_s(celebrate_time) - utils.total_s(now))
+        utils.log.info(f'将在 {celebrate_time} ({rest_time:.2f}s 后) 庆祝 {people} 过生日')
         utils.notify(
             title='CeleBirthday 通知',
-            message=f'今日将在 {celebrate_time} 庆祝 {people} 的生日！',
+            message=f'今日将在 {celebrate_time} ({rest_time:.2f}s 后) 庆祝 {people} 的生日！',
             app_name='CeleBirthday',
             app_icon='./resources/cake_logo.ico'
         )
-        now = datetime.datetime.now().time()
-        rest_time = (utils.total_ms(celebrate_time) - utils.total_ms(now))
 
+    now = datetime.datetime.now().time()  # 重新计算避免延迟
+    rest_time = (utils.total_s(celebrate_time) - utils.total_s(now))
+    threading.Timer(rest_time, celebrate, args=(people, )).start()
+
+
+@_run_on_new_thread
+@_err_reported
+def celebrate(people: str):
+    """在指定时间庆祝今天过生日的人"""
     cele = Tk()
+
     cele.title('CeleBirthday 庆祝')
     cele.geometry('400x200')
     cele.resizable(False, False)
     cele.iconbitmap('./resources/cake_logo.ico')
-    cele.withdraw()
-    cele.after(rest_time, celebrate, cele, people)
 
     cele.mainloop()
-
-
-def celebrate(wm: Tk, people: str):
-    """在指定时间庆祝今天过生日的人"""
-    raise NotImplementedError
