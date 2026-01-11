@@ -163,3 +163,21 @@ def is_valid_birthday(birthdays: dict[str, datetime.date | None]) -> bool:
         return any(
             birthday is not None for birthday in birthdays.values()
         )
+
+
+def total_ms(tm: datetime.time) -> int:
+    """
+    将时间转换为毫秒。
+
+    Args:
+        tm (datetime.time): 要转换的时间对象。
+
+    Returns:
+        int: 时间对象表示的总毫秒数。
+    """
+    return (
+        tm.hour * 60 * 60 * 1000 +
+        tm.minute * 60 * 1000 +
+        tm.second * 1000 +
+        tm.microsecond
+    )
