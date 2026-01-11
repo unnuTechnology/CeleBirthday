@@ -179,5 +179,5 @@ def total_s(tm: datetime.time) -> float:
         tm.hour * 60 * 60 +
         tm.minute * 60 +
         tm.second +
-        tm.microsecond / 1000000
+        tm.microsecond / 1000
     )
